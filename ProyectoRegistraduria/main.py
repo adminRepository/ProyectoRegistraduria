@@ -4,6 +4,7 @@ from flask import request
 from flask_cors import CORS
 import json
 from waitress import serve
+from Controladores.ControladorCandidatos import ControladorCandidatos
 
 #from Controladores.ControladorEstudiante import ControladorEstudiante
 
@@ -12,10 +13,8 @@ cors = CORS(app)
 
 
 "**************** Implementacion de los controladores ***********"
-
+miControladorCandidatos = ControladorCandidatos()
 #miControladorEstudiante = ControladorEstudiante()
-
-
 
 " ***************** Fin controladores **************************** "
 
@@ -25,7 +24,43 @@ cors = CORS(app)
 "-----------------------------------"
 
 "       --------Servicios Canditado CRUD----------      "
+""" SERVICIOS DE COLLECCION DE CANDIDATO"""
 
+@app.route("/candidatos", methods=['GET'])
+def getCandidatos():
+    json = miControladorCandidatos.index()
+    return jsonify(json)
+
+
+@app.route("/candidato", methods=['POST'])
+def crearCandidato():
+    data = request.get_json()
+    json = miControladorCandidatos.create(data)
+    return jsonify(json)
+
+
+@app.route("/candidato/<string:id>", methods=['GET'])
+def getCandidato(id):
+    json = miControladorCandidatos.show(id)
+    return jsonify(json)
+
+
+@app.route("/candidato/<string:id>", methods=['PUT'])
+def modificarCandidato(id):
+    data = request.get_json()
+    json = miControladorCandidatos.update(id, data)
+    return jsonify(json)
+
+
+@app.route("/candidato/<string:id>", methods=['DELETE'])
+def eliminarCandidato(id):
+    json = miControladorCandidatos.delete(id)
+    return jsonify(json)
+
+@app.route("/candidato/<string:id>/partido/<string:id_partido>", methods=['PUT'])
+def asignarPartidoa(id,id_partido):
+    json=miControladorCandidatos.asignarPartido(id, id_partido)
+    return  jsonify(json)
 
 "       --------Servicios Partido CRUD------------      "
 
