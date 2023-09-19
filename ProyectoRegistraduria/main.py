@@ -4,8 +4,8 @@ from flask import request
 from flask_cors import CORS
 import json
 from waitress import serve
+from Controladores.ControladorPartido import ControladorPartido
 
-#from Controladores.ControladorEstudiante import ControladorEstudiante
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -14,28 +14,36 @@ cors = CORS(app)
 "**************** Implementacion de los controladores ***********"
 
 #miControladorEstudiante = ControladorEstudiante()
+miControladorPartido= ControladorPartido()
+
+@app.route("/partidos",methods=['GET'])
+def getPartido():
+    json=miControladorPartido.index()
+    return jsonify(json)
+
+@app.route("/partidos",methods=['POST'])
+def crearPartido():
+    data = request.get_json()
+    json=miControladorPartido.create(data)
+    return jsonify(json)
+
+@app.route("/partidos/<string:id>",methods=['GET'])
+def getPartidos(id):
+    json=miControladorPartido.show(id)
+    return jsonify(json)
+
+@app.route("/partidos/<string:id>",methods=['PUT'])
+def modificarPartido(id):
+    data = request.get_json()
+    json=miControladorPartido.update(id,data)
+    return jsonify(json)
+
+@app.route("/partidos/<string:id>",methods=['DELETE'])
+def eliminarPartido(id):
+    json=miControladorPartido.delete(id)
+    return jsonify(json)
 
 
-
-" ***************** Fin controladores **************************** "
-
-
-"-----------------------------------"
-"--Implementacion de los metodos--"
-"-----------------------------------"
-
-"       --------Servicios Canditado CRUD----------      "
-
-
-"       --------Servicios Partido CRUD------------      "
-
-
-"       --------Servicios Mesa CRUD---------------      "
-
-
-"       --------Servicios Resultado CRUD----------      "
-
-"--------------------------------------------------------------"
 
 
 # Servicio que el servidor ofrecerá, y este consiste en retornar un JSON el cual
