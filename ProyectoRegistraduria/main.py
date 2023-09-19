@@ -6,6 +6,7 @@ import json
 from waitress import serve
 
 #from Controladores.ControladorEstudiante import ControladorEstudiante
+from Controladores.ControladorResultados import ControladorResultados
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -14,7 +15,7 @@ cors = CORS(app)
 "**************** Implementacion de los controladores ***********"
 
 #miControladorEstudiante = ControladorEstudiante()
-
+miControladorResultados=ControladorResultados()
 
 
 " ***************** Fin controladores **************************** "
@@ -34,6 +35,33 @@ cors = CORS(app)
 
 
 "       --------Servicios Resultado CRUD----------      "
+@app.route("/resultados",methods=['GET'])
+def getResultados():
+    json=miControladorResultados.index()
+    return jsonify(json)
+
+@app.route("/resultados",methods=['POST'])
+def crearResultados():
+    data = request.get_json()
+    json=miControladorResultados.create(data)
+    return jsonify(json)
+
+@app.route("/resultados/<string:id>",methods=['GET'])
+def getResultado(id):
+    json=miControladorResultados.show(id)
+    return jsonify(json)
+
+@app.route("/resultados/<string:id>",methods=['PUT'])
+def modificarResultados(id):
+    data = request.get_json()
+    json=miControladorResultados.update(id,data)
+    return jsonify(json)
+
+@app.route("/resultados/<string:id>",methods=['DELETE'])
+def eliminarResultados(id):
+    json=miControladorResultados.delete(id)
+    return jsonify(json)
+
 
 "--------------------------------------------------------------"
 
