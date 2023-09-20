@@ -8,6 +8,7 @@ from waitress import serve
 #from Controladores.ControladorEstudiante import ControladorEstudiante
 from Controladores.ControladorCandidatos import ControladorCandidatos
 from Controladores.ControladorPartido import ControladorPartido
+from Controladores.ControladorResultados import ControladorResultados
 
 
 app = Flask(__name__)
@@ -16,20 +17,16 @@ cors = CORS(app)
 
 "**************** Implementacion de los controladores ***********"
 miControladorCandidatos = ControladorCandidatos()
-#miControladorEstudiante = ControladorEstudiante()
 miControladorResultados=ControladorResultados()
 miControladorPartido= ControladorPartido()
-"-----------------------------------"
-"--Implementacion de los metodos--"
-"-----------------------------------"
 
-"       --------Servicios Canditado CRUD----------      "
-""" SERVICIOS DE COLLECCION DE CANDIDATO"""
 
 @app.route("/partidos",methods=['GET'])
 def getPartido():
     json=miControladorPartido.index()
     return jsonify(json)
+
+@app.route("/partidos",methods=['POST'])
 def crearPartido():
     data = request.get_json()
     json=miControladorPartido.create(data)
@@ -39,54 +36,40 @@ def crearPartido():
 def getPartidos(id):
     json=miControladorPartido.show(id)
     return jsonify(json)
-" ***************** Fin controladores **************************** "
 
-
-"-----------------------------------"
-"--Implementacion de los metodos--"
-"-----------------------------------"
 @app.route("/partidos/<string:id>",methods=['PUT'])
 def modificarPartido(id):
     data = request.get_json()
     json=miControladorPartido.update(id,data)
     return jsonify(json)
 
-"       --------Servicios Canditado CRUD----------      "
 @app.route("/partidos/<string:id>",methods=['DELETE'])
-""" SERVICIOS DE COLLECCION DE CANDIDATO"""
-
-@app.route("/candidatos", methods=['GET'])
 def eliminarPartido(id):
     json=miControladorPartido.delete(id)
     return jsonify(json)
+
+
+@app.route("/candidatos", methods=['GET'])
 def getCandidatos():
     json = miControladorCandidatos.index()
     return jsonify(json)
 
-
 @app.route("/candidato", methods=['POST'])
 def crearCandidato():
     data = request.get_json()
-@app.route("/resultados",methods=['GET'])
-def getResultados():
-    json=miControladorResultados.index()
-    return jsonify(json)
     json = miControladorCandidatos.create(data)
     return jsonify(json)
-
 
 @app.route("/candidato/<string:id>", methods=['GET'])
 def getCandidato(id):
     json = miControladorCandidatos.show(id)
     return jsonify(json)
 
-
 @app.route("/candidato/<string:id>", methods=['PUT'])
 def modificarCandidato(id):
     data = request.get_json()
     json = miControladorCandidatos.update(id, data)
     return jsonify(json)
-
 
 @app.route("/candidato/<string:id>", methods=['DELETE'])
 def eliminarCandidato(id):
@@ -98,7 +81,13 @@ def asignarPartidoa(id,id_partido):
     json=miControladorCandidatos.asignarPartido(id, id_partido)
     return  jsonify(json)
 
-"       --------Servicios Partido CRUD------------      "
+
+
+@app.route("/resultados",methods=['GET'])
+def getResultados():
+    json=miControladorResultados.index()
+    return jsonify(json)
+
 @app.route("/resultados",methods=['POST'])
 def crearResultados():
     data = request.get_json()
@@ -110,7 +99,6 @@ def getResultado(id):
     json=miControladorResultados.show(id)
     return jsonify(json)
 
-"       --------Servicios Mesa CRUD---------------      "
 @app.route("/resultados/<string:id>",methods=['PUT'])
 def modificarResultados(id):
     data = request.get_json()
@@ -122,7 +110,6 @@ def eliminarResultados(id):
     json=miControladorResultados.delete(id)
     return jsonify(json)
 
-"       --------Servicios Resultado CRUD----------      "
 
 "--------------------------------------------------------------"
 

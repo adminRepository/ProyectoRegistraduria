@@ -1,6 +1,6 @@
 from Modelos.Candidatos import Candidatos
 class ControladorCandidatos():
-    def init (self):
+    def __init__(self):
          print("Creando ControladorCandidato")
     def index(self):
          print ("Listar todos los Candidatos")
@@ -15,8 +15,8 @@ class ControladorCandidatos():
 
     def create(self,infoCandidato):
          print("Crear un Candidato")
-         elCandidato = Candidato(infoCandidato)
-         return elCandidato.dict
+         elCandidato = Candidatos(infoCandidato)
+         return elCandidato.__dict__
 
     def show(self,id):
          print("Mostrando un Candidato con id ",id)
@@ -31,8 +31,8 @@ class ControladorCandidatos():
 
     def update(self,id,infoCandidato):
          print("Actualizando Candidato con id",id)
-         elCandidato = Candidato (infoCandidato)
-         return elCandidato.dict
+         elCandidato = Candidatos(infoCandidato)
+         return elCandidato.__dict__
 
     def delete(self,id):
          print("Eliminando Candidato con id ",id)
