@@ -1,36 +1,50 @@
 from Modelos.Mesa import Mesa
+from Repositorios.RepositorioMesa import RepositorioMesa
 
 
 class ControladorMesa():
     def __init__(self):
-        print("Creando ControladorMesa")
+        # Se crea una instancia del RepositorioMesa para interactuar con la base de datos
+        self.repositorioMesa = RepositorioMesa()
 
     def index(self):
-        print("Listar todos las Mesas")
-        unaMesa = {
-            "numero": "123",
-            "cantidad_inscritos": "600"
-        }
-        return [unaMesa]
+        # Retorna todas las mesas existentes en la base de datos
+        return self.repositorioMesa.findAll()
 
     def create(self, infoMesa):
-        print("Crear una Mesa")
-        laMesa = Mesa(infoMesa)
+        # Crea un nuevo objeto mesa a partir de la información recibida
+        nuevaMesa = Mesa(infoMesa)
+
+        # Guarda la nueva mesa en la base de datos utilizando el repositorio
+        return self.repositorioMesa.save(nuevaMesa)
+
+    def show(self, id):
+        # Obtiene una mesa por su ID desde la base de datos utilizando el repositorio
+        laMesa = Mesa(self.repositorioMesa.findById(id))
+
+        # Retorna los atributos de la mesa como un diccionario
         return laMesa.__dict__
 
-    def show(self, numero):
-        print("Mostrando un resultado con numero ", numero)
-        laMesa = {
-            "numero": numero,
-            "cantidad_inscritos": "600"
-        }
-        return laMesa
+    def update(self, id, infoMesa):
+        # Obtiene la mesa actual por su ID desde la base de datos utilizando el repositorio
+        mesaActual = Mesa(self.repositorioMesa.findById(id))
 
-    def update(self, numero, infoMesa):
-        print("Actualizando mesa con numero", numero)
-        laMesa = Mesa(infoMesa)
-        return laMesa.__dict__
+        # Actualiza los atributos del departamento con la información recibida
+        mesaActual.numero = infoMesa["numero"]
+        mesaActual.cantidad_inscritors = infoMesa["cantidad_inscritos"]
 
-    def delete(self, numero):
-        print("Eliminando mesa con numero ", numero)
-        return {"deleted_count": 1}
+
+        # Guarda los cambios de la mesa actualizado en la base de datos utilizando el repositorio
+        return self.repositorioMesa.save(mesaActual)
+
+    def delete(self, id):
+        # Elimina una mesa por su ID desde la base de datos utilizando el repositorio
+        return self.repositorioMesa.delete(id)
+
+
+
+
+
+
+
+
