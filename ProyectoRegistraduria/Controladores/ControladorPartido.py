@@ -1,39 +1,44 @@
 from Modelos.Partido import Partido
 
+from Repositorios.RepositorioPartido import RepositorioPartido
+
+
 class ControladorPartido():
     def __init__(self):
-        print("Creando ControladorPartido")
+        # Se crea una instancia del RepositorioPartido para interactuar con la base de datos
+        self.repositorioPartido = RepositorioPartido()
 
     def index(self):
-        print("Listar todos los Partidos")
-        unPartido={
-            "_id": "abc50",
-            "nombre": "cambio Radical",
-            "lema": "Juntos somos el cambio"
-        }
-        return [unPartido]
+        # Retorna todos los partidos existentes en la base de datos
+        return self.repositorioPartido.findAll()
 
+    def create(self, infoPartido):
+        # Crea un nuevo objeto Partido a partir de la información recibida
+        nuevoPartido = Partido(infoPartido)
 
-    def create(self,infoPartido):
-        print("Crear un Partido")
-        elPartido = Partido(infoPartido)
+        # Guarda el nuevo Partido en la base de datos utilizando el repositorio
+        return self.repositorioPartido.save(nuevoPartido)
+
+    def show(self, id):
+        # Obtiene un partido por su ID desde la base de datos utilizando el repositorio
+        elPartido = Partido(self.repositorioPartido.findById(id))
+
+        # Retorna los atributos del estudiante como un diccionario
         return elPartido.__dict__
 
-    def show(self,id):
-        print("Mostrando un Partido con id ", id)
-        elPartido = {
-            "_id": "abc50",
-            "nombre": "cambio Radical",
-            "lema": "Juntos somos el cambio"
+    def update(self, id, infoPartido):
+        # Obtiene el partido actual por su ID desde la base de datos utilizando el repositorio
+        partidoActual = Partido(self.repositorioPartido.findById(id))
 
-        }
-        return elPartido
+        # Actualiza los atributos del partido con la información recibida
+        partidoActual.nombre = infoPartido["nombre"]
+        partidoActual.lema = infoPartido["lema"]
 
-    def update(self, id,infoPartido):
-        print("Actualizando partido con id",id)
-        elPartido = Partido(infoPartido)
-        return elPartido.__dict__
+        # Guarda los cambios del partido actualizado en la base de datos utilizando el repositorio
+        return self.repositorioPartido.save(partidoActual)
 
     def delete(self, id):
-        print("Elimiando Partido con id ", id)
-        return {"deleted_count": 1}
+        # Elimina un partido por su ID desde la base de datos utilizando el repositorio
+        return self.repositorioPartido.delete(id)
+
+
