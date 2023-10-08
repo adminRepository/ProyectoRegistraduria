@@ -92,7 +92,7 @@ def crearResultados():
     json=miControladorResultados.create(data)
     return jsonify(json)
 
-@app.route("/resultados/<string:id>",methods=['GET'])
+@app.route("/resultado/<string:id>",methods=['GET'])
 def getResultado(id):
     json=miControladorResultados.show(id)
     return jsonify(json)
