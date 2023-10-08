@@ -1,36 +1,32 @@
-from Modelos.Resultados import Resultados
+from Repositorios.RepositorioResultado import RepositorioResultado
+from Modelos.Resultado import Resultado
+
+
 class ControladorResultados():
     def __init__(self):
-         print("Creando ControladorResultados")
+        self.repositorioResultado = RepositorioResultado()
+
     def index(self):
-         print("Listar todos los Resultados")
-         unResultado = {
-             "_id": "1",
-             "numero_mesa": "123",
-             "id_partido": "P1"
+        return self.repositorioResultado.findAll()
 
-         }
-         return [unResultado]
+    def create(self, infoDepartamento):
+        nuevoResultado = Resultado(infoDepartamento)
+        return self.repositorioResultado.save(nuevoResultado)
 
-    def create(self,infoResultado):
-         print("Crear un resultado")
-         elResultado = Resultados(infoResultado)
-         return elResultado.__dict__
+    def show(self, id):
+        elResultado = Resultado(self.repositorioResultado.findById(id))
+        return elResultado.__dict__
 
-    def show(self,id):
-         print("Mostrando un resultado con id ",id)
-         elResultado = {
-             "_id": id,
-             "numero_mesa": "123",
-             "id_partido": "P1"
-         }
-         return elResultado
+    def update(self, id, infoResultado):
+        # Obtiene la mesa actual por su ID desde la base de datos utilizando el repositorio
+        resultadoActual = Resultado(self.repositorioResultado.findById(id))
 
-    def update(self,id,infoResultado):
-         print("Actualizando resultados con id",id)
-         elResultado = Resultados(infoResultado)
-         return elResultado.__dict__
+        # Actualiza los atributos del departamento con la información recibida
+        resultadoActual.numero_mesa = infoResultado["numero_mesa"]
+        resultadoActual.id_partido = infoResultado["id_partido"]
 
-    def delete(self,id):
-         print("Eliminando resulatdos con id ",id)
-         return {"deleted_count": 1}
+        # Guarda los cambios de la mesa actualizado en la base de datos utilizando el repositorio
+        return self.repositorioResultado.save(resultadoActual)
+
+    def delete(self, id):
+        return self.repositorioResultado.delete(id)
