@@ -1,39 +1,37 @@
 from Modelos.Candidatos import Candidatos
+from Repositorios.RepositorioCandidato import RepositorioCandidato
 class ControladorCandidatos():
     def __init__(self):
-         print("Creando ControladorCandidato")
+        # Se crea una instancia del RepositorioEstudiante para interactuar con la base de datos
+        self.repositorioCandidato = RepositorioCandidato()
     def index(self):
-         print ("Listar todos los Candidatos")
-         unCandidato = {
-             "_id": "1" ,
-             "nombre": " Juan Pablo ",
-             "apellido":"Quinonez",
-             "cedula":"12345678",
-             "partido":"ColombiaBuenaFup"
-         }
-         return [unCandidato]
+        # Retorna todos los estudiantes existentes en la base de datos
+        return self.repositorioCandidato.findAll()
+    def create(self, infoCandidato):
+        # Crea un nuevo objeto Estudiante a partir de la información recibida
+        nuevoCandidato = Candidatos(infoCandidato)
 
-    def create(self,infoCandidato):
-         print("Crear un Candidato")
-         elCandidato = Candidatos(infoCandidato)
-         return elCandidato.__dict__
+        # Guarda el nuevo estudiante en la base de datos utilizando el repositorio
+        return self.repositorioCandidato.save(nuevoCandidato)
 
-    def show(self,id):
-         print("Mostrando un Candidato con id ",id)
-         elCandidato = {
-             "_id": id,
-             "nombre": " Juan Pablo ",
-             "apellido": "Quinonez",
-             "cedula": "12345678",
-             "partido": "ColombiaBuenaFup"
-         }
-         return elCandidato
+    def show(self, id):
+        # Obtiene un estudiante por su ID desde la base de datos utilizando el repositorio
+        elCandidato = Candidatos(self.repositorioCandidato.findById(id))
 
-    def update(self,id,infoCandidato):
-         print("Actualizando Candidato con id",id)
-         elCandidato = Candidatos(infoCandidato)
-         return elCandidato.__dict__
+        # Retorna los atributos del estudiante como un diccionario
+        return elCandidato.__dict__
 
-    def delete(self,id):
-         print("Eliminando Candidato con id ",id)
-         return {"deleted_count": 1}
+    def update(self, id, infoCandidato):
+        # Obtiene el estudiante actual por su ID desde la base de datos utilizando el repositorio
+        candidatoActual = Candidatos(self.repositorioCandidato.findById(id))
+        candidatoActual.nombre = infoCandidato["nombre"]
+        candidatoActual.apellido = infoCandidato["apellido"]
+        candidatoActual.cedula = infoCandidato["cedula"]
+        candidatoActual.partido = infoCandidato["partido"]
+
+        # Guarda los cambios del estudiante actualizado en la base de datos utilizando el repositorio
+        return self.repositorioCandidato.save(candidatoActual)
+
+    def delete(self, id):
+        # Elimina un estudiante por su ID desde la base de datos utilizando el repositorio
+        return self.repositorioCandidato.delete(id)

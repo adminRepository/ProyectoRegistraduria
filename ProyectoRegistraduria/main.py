@@ -48,7 +48,7 @@ def eliminarPartido(id):
 @app.route("/candidatos", methods=['GET'])
 def getCandidatos():
     json = miControladorCandidatos.index()
-    
+    return jsonify(json)
 
     
 @app.route("/candidato", methods=['POST'])
