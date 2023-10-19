@@ -31,7 +31,7 @@ class ControladorMesa():
 
         # Actualiza los atributos del departamento con la información recibida
         mesaActual.numero = infoMesa["numero"]
-        mesaActual.cantidad_inscritors = infoMesa["cantidad_inscritos"]
+        mesaActual.cantidad_inscritos = infoMesa["cantidad_inscritos"]
 
 
         # Guarda los cambios de la mesa actualizado en la base de datos utilizando el repositorio
