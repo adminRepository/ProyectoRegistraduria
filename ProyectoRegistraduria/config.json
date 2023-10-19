@@ -1,4 +1,6 @@
 {
   "url-backend": "127.1.1.1",
-  "port": 50
+  "port": 50,
+  "data-db-connection": "mongodb+srv://usuario-pruebas:mongo-12345@cluster0.4qipe2h.mongodb.net/bd-resultados-registraduria?retryWrites=true&w=majority",
+  "name-db": "bd-resultados-registraduria"
 }
