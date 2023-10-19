@@ -135,6 +135,12 @@ def eliminarMesa(id):
     json = miControladorMesa.delete(id)
     return jsonify(json)
 
+"----------------------------------------------------"
+app.route("/candidatos/<string:id>/partidos/<string:id_partidos>", methods=['PUT'])
+def asignarPartidoACandidatos(id, id_partido):
+    json = miControladorCandidatos.asignarPartido(id, id_partido)
+    return jsonify(json)
+
 "--------------------------------------------------------------"
 
 
